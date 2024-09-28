@@ -1,3 +1,5 @@
+
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,16 +8,9 @@ using UnityEngine.UI;
 
 public class main : MonoBehaviour
 {
-    [SerializeField] private Slider Slider;    // Reference to the slider
+    [SerializeField] private Slider volumeSlider;    // Reference to the slider
 
-    private void Start()
-    {
-        // Initially hide the slider when the game starts
-        if (Slider != null)
-        {
-            Slider.gameObject.SetActive(false);    // Make sure the slider is hidden initially
-        }
-    }
+    private bool isSliderVisible = false;           // State to track if the slider is visible
 
     public void OnPlayButton()
     {
@@ -25,10 +20,20 @@ public class main : MonoBehaviour
 
     public void OnOptionButton()
     {
-        if (Slider != null)
+        if (volumeSlider == null)
         {
-            // Make the slider visible when the Option button is clicked
-            Slider.gameObject.SetActive(true);
+            Debug.LogError("volumeSlider is not assigned in the Inspector.");
+            return;
         }
+
+        // Toggle the slider visibility when the Option button is clicked
+        isSliderVisible = !isSliderVisible;
+        volumeSlider.gameObject.SetActive(isSliderVisible); // Show or hide the slider
     }
+
+    public void OnVolumeChange()
+    {
+        AudioListener.volume = volumeSlider.value;
+    }
+
 }
